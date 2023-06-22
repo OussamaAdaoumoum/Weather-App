@@ -14,24 +14,12 @@ const {
 
 
 
-// function getData(name){
-//   const uri = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'+name+'?unitGroup=us&key=QT8YW9NBB9B6L5SMQHHFZ3TWN&contentType=json';
-//   let apiData;
-  
-//   axios.get(uri)
-//     .then(function (response) {
-//       console.log("axioooooos"+response.data.latitude);
-//       apiData = response.data;
-//     })
-//     return apiData;
-// }
-
 function getData(name) {
   const uri = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'+name+'?unitGroup=us&key=QT8YW9NBB9B6L5SMQHHFZ3TWN&contentType=json';
   
   return axios.get(uri)
     .then(function (response) {
-      console.log("axioooooos"+response.data.latitude);
+      console.log(response.data.latitude);
       return response.data;
     })
     .catch(function (error) {
@@ -60,26 +48,11 @@ const weatherType = new GraphQLObjectType({
     address: { type: GraphQLString },
     description: { type: GraphQLString },
     timezone: { type: GraphQLString },
-    days:{ type: GraphQLList(dayType)  },
+    days:{ type: new GraphQLList(dayType)  },
   }),
 });
 
-const AuthorType = new GraphQLObjectType({
-  name: "Author",
-  fields: () => ({
-    id: { type: GraphQLID }, 
-    name: { type: GraphQLString },
-    age: { type: GraphQLInt },
-    books:{
-        type: new GraphQLList(BookType),
-        resolve(parent, args){
-            // return _.filter(books, {authorId: parent.id})
-            return Book.find({authorId: parent.id});;
 
-        }
-    }
-  }),
-});
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
